@@ -16,4 +16,11 @@ const plotWidth = graphicWidth - (margin.left + margin.right);
 //Set attributes
 graphicGroup.select('svg#graph-container')
     .style('height', graphicHeight)
-    .style('width', graphicWidth);
+    .style('width', graphicWidth)
+    .style('background-color', '#CCCCCC')
+    .select('rect#plot')
+    .style('height', plotHeight)
+    .style('width', plotWidth)
+    .style('x', margin.left)
+    .style('y', margin.top)
+    .style('fill', '#FFFFFF');
