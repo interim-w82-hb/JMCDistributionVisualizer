@@ -12,13 +12,20 @@
   <body>
     <g id="function">
         <h1 id="main-header">Distribution Visualizer</h1>
-        <input id="function-input" type="text">
+        <span>Function:</span>
+        <input id="function-input" type="text" size="40">
+        <br>
+        <span>xMin:</span>
+        <input id="x-min-input" type="number">
+        <span>xMax:</span>
+        <input id="x-max-input" type="number">
         <button id="function-submit">Submit</button>
     </g>
     <br>
     <div id="graphic">
         
     </div>
+    <script src="js/integrate.js"></script>
     <script src="js/gatherData.js"></script>
     <script src="js/drawGraph.js"></script>
   </body>
