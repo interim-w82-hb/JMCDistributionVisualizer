@@ -3,7 +3,6 @@ let testData = [];
 for(let i = 0; i < 100; i++){
     testData[i] = {x: i, y: Math.pow((.1*i), 2)};
 }
-console.log(testData[3].x + ' ' + testData[3].y);
 
 //Initialize graphic dimensions
 const graphicHeight = 400;
