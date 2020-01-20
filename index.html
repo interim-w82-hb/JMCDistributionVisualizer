@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="css/styles.css" />
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="node_modules/mathjs/dist/math.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/d3-3d/build/d3-3d.js"></script>
     <title>Distribution Visualizer</title>
   </head>
   <body>
     <g id="function">
         <h1 id="main-header">Distribution Visualizer</h1>
+        <h2 id="input-header">PDF:</h2>
         <span>Function:</span>
         <input id="function-input" type="text" size="40">
         <br>
@@ -22,11 +24,13 @@
         <button id="function-submit">Submit</button>
     </g>
     <br>
+    <h2 id="graph-header">CDF:</h2>
     <div id="graphic">
-        
     </div>
+    <svg id="dim-plot" width="960" height="500"></svg>
     <script src="js/integrate.js"></script>
-    <script src="js/gatherData.js"></script>
     <script src="js/drawGraph.js"></script>
+    <script src="js/gatherData.js"></script>
+    <script src="js/draw3d.js"></script>
   </body>
 </html>
