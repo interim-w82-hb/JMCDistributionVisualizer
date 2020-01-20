@@ -62,10 +62,10 @@ function graphDensityPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height) 
         );
     
     //Add endpoints so fill is even
-    // let oldPath = plotSvg.select(".mypath").attr('d');
-    // let newPath = oldPath + 'L'+width+','+height+'L'+0+','+height
-    // plotSvg.select('.mypath')
-    //     .style('d', newPath);
+    let oldPath = plotSvg.select(".mypath").attr('d');
+    let newPath = oldPath + 'L'+width+','+height+'L'+0+','+height
+    plotSvg.select('.mypath')
+        .attr('d', newPath);
 }
 
 // Function to compute density
