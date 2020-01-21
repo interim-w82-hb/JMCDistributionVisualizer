@@ -13,14 +13,7 @@ const xMin = 0;
 const xMax = 1;
 
 // plot default
-plotFunction();
-
-// plot function when submitted
-d3.select('#function-submit')
-  .on('click', function() {
-      gatherData();
-      plotFunction();
-  });
+//plotFunction();
 
 function gatherData() {
     funcText = d3.select('#function-input').property('value');
@@ -32,8 +25,8 @@ function plotFunction() {
 
     // clear and redraw plot
     // https://stackoverflow.com/questions/14422198/how-do-i-remove-all-children-elements-from-a-node-and-then-apply-them-again-with
-    d3.select('#graphic').selectAll('*').remove();
-    plotSvg = d3.select('#graphic')
+    d3.select('#two-d-graphic').selectAll('*').remove();
+    plotSvg = d3.select('#two-d-graphic')
                 .append('svg')
                 .attr('width', plotWidth + margin.left + margin.right)
                 .attr('height', plotHeight + margin.top + margin.bottom)
