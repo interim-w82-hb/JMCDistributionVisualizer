@@ -17,7 +17,6 @@ function draw3d() {
     let zMax = +d3.select('#z-max-input').property('value') || 20;
     let xRange = xMax - xMin;
     let zRange = zMax - zMin;
-    console.log(funcText3d, imgScale, xMin, zMax);
     var origin = [480, 480], j = 10, points = [], base = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
     var svg = d3.select('#dim-plot').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
     var mx, my, mouseX, mouseY;
@@ -35,7 +34,6 @@ function draw3d() {
         .range([0, zRange]);
 
     imgScale = sizeScale(Math.max(xRange, zRange));
-    console.log(imgScale);
     
     var baseSurface = d3._3d()
         .scale(imgScale)
@@ -146,8 +144,6 @@ function draw3d() {
         base = [];
         for(var z = zMin; z < zMax; z += zRange / 20){
             for(var x = xMin; x < xMax; x += xRange / 20){
-                console.log(xScale(x), zScale(z));
-                console.log(x, z);
                 base.push({x: xScale(x), y: 0, z: zScale(z)});
             }
         }
