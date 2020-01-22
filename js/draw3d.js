@@ -10,7 +10,6 @@ function draw3d() {
     d3.select('#three-d-graphic').select('svg').remove();
     d3.select('#three-d-graphic').append('svg').attr('id', 'dim-plot').attr('width', '960').attr('height', '960');
     let funcText3d = d3.select('#function-input').property('value').replace('y', 'z');
-    let imgScale = +d3.select('#size-input').property('value') | 10;
     let xMin = +d3.select('#x-min-input').property('value') || 0;
     let xMax = +d3.select('#x-max-input').property('value') || 20;
     let zMin = +d3.select('#z-min-input').property('value') || 0;
@@ -20,10 +19,7 @@ function draw3d() {
     var origin = [480, 480], j = 10, points = [], base = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
     var svg = d3.select('#dim-plot').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
     var mx, my, mouseX, mouseY;
-
-    const sizeScale = d3.scaleLinear()
-        .domain([20, 1])
-        .range([10, 200]);
+    let imgScale = 250 / Math.max(xRange, zRange);
 
     const xScale = d3.scaleLinear()
         .domain([xMin, xMax])
@@ -32,8 +28,6 @@ function draw3d() {
     const zScale = d3.scaleLinear()
         .domain([zMin, zMax])
         .range([0, zRange]);
-
-    imgScale = sizeScale(Math.max(xRange, zRange));
     
     var baseSurface = d3._3d()
         .scale(imgScale)
@@ -59,6 +53,7 @@ function draw3d() {
     
     function processData(data, planeClass, tt){
         
+        // display the input function
         var planes = svg.selectAll('path.' + planeClass).data(data, function(d){ return d.plane; });
     
         planes
@@ -82,6 +77,7 @@ function draw3d() {
     
     function processBaseData(data, planeClass, tt){
         
+        // display the base
         var planes = svg.selectAll('path.' + planeClass).data(data, function(d){ return d.plane; });
     
         planes
@@ -148,12 +144,15 @@ function draw3d() {
             }
         }
     
+        // display the base and function surfaces
         color.domain([yMin, yMax]);
         processData(surface(points), 'surface', 1000);
         processBaseData(baseSurface(base), 'base', 1000);
     }
     
     function change(){
+
+        // submit the entered function
         const comp = math.compile(funcText3d);
         function eqa (xVal, zVal) {
             return comp.evaluate({x: xVal, z: zVal});
