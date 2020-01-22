@@ -27,11 +27,11 @@ function plotFunction() {
     // https://stackoverflow.com/questions/14422198/how-do-i-remove-all-children-elements-from-a-node-and-then-apply-them-again-with
     d3.select('#two-d-graphic').selectAll('*').remove();
     plotSvg = d3.select('#two-d-graphic')
-                .append('svg')
-                .attr('width', plotWidth + margin.left + margin.right)
-                .attr('height', plotHeight + margin.top + margin.bottom)
-                .append('g')
-                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .append('svg')
+        .attr('width', plotWidth + margin.left + margin.right)
+        .attr('height', plotHeight + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     // convert input text to function
     const comp = math.compile(funcText);

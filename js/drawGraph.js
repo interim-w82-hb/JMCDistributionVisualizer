@@ -3,18 +3,18 @@ function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height) {
 
   // add the x Axis
   const x = d3.scaleLinear()
-              .domain(d3.extent(data.map(d => d[xAxisUnits])))
-              .range([0, width]);
+    .domain(d3.extent(data.map(d => d[xAxisUnits])))
+    .range([0, width]);
   plotSvg.append('g')
-         .attr('transform', 'translate(0,' + height + ')')
-         .call(d3.axisBottom(x));
+    .attr('transform', 'translate(0,' + height + ')')
+    .call(d3.axisBottom(x));
 
   // add the y Axis
   const y = d3.scaleLinear()
-              .domain(d3.extent(data.map(d => d[yAxisUnits])))
-              .range([height, 0]);
+    .domain(d3.extent(data.map(d => d[yAxisUnits])))
+    .range([height, 0]);
   plotSvg.append('g')
-         .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y));
 
   // plot the curve
   plotSvg.append('path')
@@ -26,16 +26,16 @@ function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height) {
          .attr('stroke-width', 1)
          .attr('stroke-linejoin', 'round')
          .attr('d', d3.line()
-                      .curve(d3.curveBasis)
-                      .x(function(d) { return x(d[xAxisUnits]); })
-                      .y(function(d) { return y(d[yAxisUnits]); })
+            .curve(d3.curveBasis)
+            .x(function(d) { return x(d[xAxisUnits]); })
+            .y(function(d) { return y(d[yAxisUnits]); })
          );
 
   // add endpoints so fill is even
   let oldPath = plotSvg.select('.mypath').attr('d');
   let newPath = oldPath + 'L' + width + ',' + height + 'L' + 0 + ',' + height
   plotSvg.select('.mypath')
-         .attr('d', newPath);
+    .attr('d', newPath);
 }
 
 // functions to compute density (TODO: necessary?)
