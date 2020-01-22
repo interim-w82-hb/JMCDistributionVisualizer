@@ -1,11 +1,14 @@
 // 3d code modeled after https://bl.ocks.org/Niekes/e920c03edd7950578b8a6cded8b5a1a5
 // and https://bl.ocks.org/Niekes/1c15016ae5b5f11508f92852057136b5
 
+const width = 720;
+const height = 720;
+
 // plot function when submitted
 function draw3d() {
 
     d3.select('#three-d-graphic').select('svg').remove();
-    d3.select('#three-d-graphic').append('svg').attr('id', 'dim-plot').attr('width', '960').attr('height', '960');
+    d3.select('#three-d-graphic').append('svg').attr('id', 'dim-plot').attr('width', width).attr('height', height);
     let funcText3d = d3.select('#function-input').property('value').replace('y', 'z');
     let xMin = +d3.select('#x-min-input').property('value') || 0;
     let xMax = +d3.select('#x-max-input').property('value') || 20;
@@ -13,7 +16,7 @@ function draw3d() {
     let zMax = +d3.select('#z-max-input').property('value') || 20;
     let xRange = xMax - xMin;
     let zRange = zMax - zMin;
-    var origin = [480, 480], j = 10, points = [], base = [], yLine = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
+    var origin = [width/2, height/2], j = 10, points = [], base = [], yLine = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
     var svg = d3.select('#dim-plot').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
     var mx, my, mouseX, mouseY;
     const maxRange = Math.max(xRange, zRange);
