@@ -128,13 +128,14 @@ function draw3d() {
             .append('text')
             .attr('class', '_3d yText')
             .attr('dx', '.3em')
+            .attr('text-anchor', 'end')
             .merge(yText)
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
             })
-            .attr('x', function(d){ return d.projected.x - 20; })
+            .attr('x', function(d){ return d.projected.x - 10; })
             .attr('y', function(d){ return d.projected.y; })
-            .text(function(d){ return d[1] <= 0 ? -d[1] : ''; });
+            .text(function(d){ return d[3]; });
 
         yText.exit().remove();
 
@@ -171,8 +172,8 @@ function draw3d() {
         // define points of function without yScale
         points = [];
         for(var z = zMin; z < zMax; z += zRange / 20){
-            for(var x = xMin; x < xMax; x += xRange / 20){
-                points.push({x: xScale(x), y: eq(x, z), z: zScale(z)});
+            for(var x = xMin; x < xMax; x += xRange / 20){d3.range(-1, 11, 1).forEach(function(d){ yLine.push([-j, -d, -j]); });
+                points.push({x: x, y: eq(x, z), z: z});
             }
         }
 
@@ -181,8 +182,8 @@ function draw3d() {
         const yRange = yMax - yMin;
 
         const yScale = d3.scaleLinear()
-            .domain([yMin, yMax])
-            .range([yMin/maxRange, maxRange]);
+            .domain([0, yMax])
+            .range([0, maxRange]);
     
         // define points of function with yScale
         points = [];
@@ -196,16 +197,16 @@ function draw3d() {
         base = [];
         for(var z = zMin; z < zMax; z += zRange / 20){
             for(var x = xMin; x < xMax; x += xRange / 20){
-                base.push({x: xScale(x), y: 0, z: zScale(z)});
+                base.push({x: xScale(x), y: yScale(0), z: zScale(z)});
             }
         }
 
         // define y scale
         yLine = [];
-        d3.range(-1, 11, 1).forEach(function(d){ yLine.push([0, -d, 0]); });
+        d3.range(yMin, yMax+(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
     
         // display the base and function surfaces
-        color.domain([yMin, yMax]);
+        color.domain([-yScale(yMax), -yScale(yMin)]);
         processData(surface(points), 'surface', 1000);
         processBaseData(baseSurface(base), 'base', 1000);
         processYAxisData(yAxis3d([yLine]));
