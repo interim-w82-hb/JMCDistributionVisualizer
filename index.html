@@ -10,6 +10,8 @@
     <script src="./node_modules/mathjs/dist/math.js" type="text/javascript"></script>
     <script src="https://unpkg.com/d3-3d/build/d3-3d.js"></script>
     <script src="js/draw3d.js"></script>
+    <script src="js/draw2dx.js"></script>
+    <script src="js/draw2dz.js"></script>
     <title>Distribution Visualizer</title>
   </head>
   <body>
@@ -20,14 +22,14 @@
         <input id="function-input" type="text" size="40">
         <br>
         <span>xMin:</span>
-        <input id="x-min-input" type="number">
+        <input id="x-min-input" type="number" step="0.01">
         <span>xMax:</span>
-        <input id="x-max-input" type="number">
+        <input id="x-max-input" type="number" step="0.01">
         <br>
         <span>yMin:</span>
-        <input id="z-min-input" type="number">
+        <input id="z-min-input" type="number" step="0.01">
         <span>yMax:</span>
-        <input id="z-max-input" type="number">
+        <input id="z-max-input" type="number" step="0.01">
         <br>
         <button id="function-submit" onclick="draw3d()">Submit</button>
     </g>
@@ -36,11 +38,19 @@
     <div id="three-d-graphic">
       <svg id="placeholder"></svg>
     </div>
-    <div id="two-d-graphics">
+    <span>Fixed x:</span>
+    <input id="chosen-x" type="number" step="0.01">
+    <button id="x-submit" onclick="draw2dx()">Submit</button>
+    <div id="two-d-graphics-x">
+      <svg id="placeholder-2"></svg>
+    </div>
+    <span>Fixed y:</span>
+    <input id="chosen-z" type="number" step="0.01">
+    <button id="z-submit" onclick="draw2dz()">Submit</button>
+    <div id="two-d-graphics-z">
+      <svg id="placeholder-3"></svg>
     </div>
     <script src="js/integrate.js"></script>
-    <script src="js/drawGraph.js"></script>
-    <script src="js/gatherData.js"></script>
   </body>
   <footer>
     <p>Page made by Bryant George and Henri Prudhomme</p>

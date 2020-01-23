@@ -213,6 +213,10 @@ function draw3d() {
         processData(surface(points), 'surface', 1000);
         processBaseData(baseSurface(base), 'base', 1000);
         processYAxisData(yAxis3d([yLine]));
+
+        // update the 2D plots
+        draw2dx();
+        draw2dz();
     }
     
     function change(){

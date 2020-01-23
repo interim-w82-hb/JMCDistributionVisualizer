@@ -7,18 +7,16 @@ const margin = {top: 30, right: 30, bottom: 30, left: 50};
 const plotWidth = graphicWidth - margin.left - margin.right;
 const plotHeight = graphicHeight - margin.top - margin.bottom;
 
-// defaults
-const funcText = '3*(x^2)';
-const xMin = 0;
-const xMax = 1;
 
-// plot default
-//plotFunction();
 
 function gatherData() {
-    funcText = d3.select('#function-input').property('value');
-    xMin = +d3.select('#x-min-input').property('value');
-    xMax = +d3.select('#x-max-input').property('value');
+    let funcText3d = d3.select('#function-input').property('value').replace('y', 'z');
+    let xMin = +d3.select('#x-min-input').property('value') || 0;
+    let xMax = +d3.select('#x-max-input').property('value') || 1;
+    let zMin = +d3.select('#z-min-input').property('value') || 0;
+    let zMax = +d3.select('#z-max-input').property('value') || 1;
+    let xRange = xMax - xMin;
+    let zRange = zMax - zMin;
 }
 
 function plotFunction() {
