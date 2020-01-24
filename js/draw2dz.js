@@ -28,13 +28,20 @@ function draw2dz() {
         .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    // compile text to function
+    // compile text to function at given z
     const comp = math.compile(funcText2d);
     function funcAtZ (zChosen) {
         return function(xVal) {return comp.evaluate({x: xVal, z: zChosen});}
     }
-    
-    const totalArea = math.integrate(funcAtZ(zChosen), xMin, xMax, 0.001);
+
+    const totalAreaCond = math.integrate(funcAtZ(zChosen), xMin, xMax, 0.001);
+
+    // compute integral of slice at given z
+    function integralAtZ(zVal) {
+        return math.integrate(funcAtZ(zVal), xMin, xMax, 0.001);
+    }
+
+    const totalAreaMarg = math.integrate(integralAtZ, xMin, xMax);
 
     // gather points
     let funcData = [];
@@ -43,11 +50,11 @@ function draw2dz() {
     let xVal = xMin;
     let zVal = zMin;
     for (let i = 0; i < numPoints+1; i++) {
-        funcData[i] = {x: xVal, z: zVal, y: funcAtZ(zChosen)(xVal) * (1/totalArea), yInt: math.integrate(funcAtZ(zVal), xMin, xMax, 0.001)};
+        funcData[i] = {x: xVal, z: zVal, cond: funcAtZ(zChosen)(xVal) * (1/totalAreaCond), marg: integralAtZ(zVal) * (1/totalAreaMarg)};
         xVal += xScaleFactor;
         zVal += zScaleFactor;
     }
 
-    createPlot(funcData, plotCondSvg, 'x', 'y', plotWidth, plotHeight, 'Conditional at Fixed y:', '#6666ff');
-    createPlot(funcData, plotMargSvg, 'z', 'yInt', plotWidth, plotHeight, 'Marginal as y Varies', '#00cc66');
+    createPlot(funcData, plotCondSvg, 'x', 'cond', plotWidth, plotHeight, 'Conditional at Fixed y:', '#6666ff');
+    createPlot(funcData, plotMargSvg, 'z', 'marg', plotWidth, plotHeight, 'Marginal as y Varies', '#00cc66');
 }
