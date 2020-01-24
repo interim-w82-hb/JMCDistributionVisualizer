@@ -11,9 +11,9 @@ function draw3d() {
     d3.select('#three-d-graphic').append('svg').attr('id', 'dim-plot').attr('width', width).attr('height', height);
     let funcText3d = d3.select('#function-input').property('value').replace('y', 'z');
     let xMin = +d3.select('#x-min-input').property('value') || 0;
-    let xMax = +d3.select('#x-max-input').property('value') || 20;
+    let xMax = +d3.select('#x-max-input').property('value') || 1;
     let zMin = +d3.select('#z-min-input').property('value') || 0;
-    let zMax = +d3.select('#z-max-input').property('value') || 20;
+    let zMax = +d3.select('#z-max-input').property('value') || 1;
     let xRange = xMax - xMin;
     let zRange = zMax - zMin;
     var origin = [width/2, height/2], j = 10, points = [], base = [], yLine = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
@@ -51,6 +51,20 @@ function draw3d() {
         .shape('SURFACE', j*2);
 
     var yAxis3d = d3._3d()
+        .shape('LINE_STRIP')
+        .origin(origin)
+        .rotateY(startAngle)
+        .rotateX(-startAngle)
+        .scale(imgScale);
+
+    var xAxis3d = d3._3d()
+        .shape('LINE_STRIP')
+        .origin(origin)
+        .rotateY(startAngle)
+        .rotateX(-startAngle)
+        .scale(imgScale);
+
+    var zAxis3d = d3._3d()
         .shape('LINE_STRIP')
         .origin(origin)
         .rotateY(startAngle)
@@ -145,6 +159,81 @@ function draw3d() {
         d3.selectAll('._3d').sort(d3._3d().sort);
     } 
     
+    function processXAxisData(data) {
+
+        // y-Scale
+        var xAxis = svg.selectAll('path.xAxis').data(data);
+
+        xAxis
+            .enter()
+            .append('path')
+            .attr('class', '_3d xAxis')
+            .merge(xAxis)
+            .attr('stroke', 'black')
+            .attr('stroke-width', .5)
+            .attr('d', xAxis3d.draw);
+
+        xAxis.exit().remove();
+
+        // y-Scale text
+        var xText = svg.selectAll('text.xText').data(data[0]);
+
+        xText
+            .enter()
+            .append('text')
+            .attr('class', '_3d xText')
+            .attr('dx', '.3em')
+            .attr('text-anchor', 'end')
+            .merge(xText)
+            .each(function(d){
+                d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
+            })
+            .attr('x', function(d){ return d.projected.x - 10; })
+            .attr('y', function(d){ return d.projected.y; })
+            .text(function(d){ return d[3]; });
+
+        xText.exit().remove();
+
+        d3.selectAll('._3d').sort(d3._3d().sort);
+    } 
+    function processZAxisData(data) {
+
+        // y-Scale
+        var zAxis = svg.selectAll('path.zAxis').data(data);
+
+        zAxis
+            .enter()
+            .append('path')
+            .attr('class', '_3d yAxis')
+            .merge(zAxis)
+            .attr('stroke', 'black')
+            .attr('stroke-width', .5)
+            .attr('d', zAxis3d.draw);
+
+        zAxis.exit().remove();
+
+        // y-Scale text
+        var zText = svg.selectAll('text.zText').data(data[0]);
+
+        zText
+            .enter()
+            .append('text')
+            .attr('class', '_3d zText')
+            .attr('dx', '.3em')
+            .attr('text-anchor', 'end')
+            .merge(zText)
+            .each(function(d){
+                d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
+            })
+            .attr('x', function(d){ return d.projected.x - 10; })
+            .attr('y', function(d){ return d.projected.y; })
+            .text(function(d){ return d[3]; });
+
+        zText.exit().remove();
+
+        d3.selectAll('._3d').sort(d3._3d().sort);
+    } 
+
     function colorize(d){
         var _y = (d[0].y + d[1].y + d[2].y + d[3].y)/4;
         return d.ccw ? d3.interpolateSpectral(color(_y)) : d3.color(d3.interpolateSpectral(color(_y))).darker(2.5);
@@ -163,6 +252,8 @@ function draw3d() {
         processData(surface.rotateY(beta + startAngle).rotateX(alpha - startAngle)(points), 'surface', 0);
         processBaseData(baseSurface.rotateY(beta + startAngle).rotateX(alpha - startAngle)(base), 'base', 0);
         processYAxisData(yAxis3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)([yLine]));
+        processXAxisData(xAxis3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)([xLine]));
+        processZAxisData(zAxis3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)([zLine]));
     }
     
     function dragEnd(){
@@ -187,6 +278,7 @@ function draw3d() {
         const yScale = d3.scaleLinear()
             .domain([0, yMax])
             .range([0, maxRange]);
+            
     
         // define points of function with yScale
         points = [];
@@ -207,12 +299,23 @@ function draw3d() {
         // define y scale
         yLine = [];
         d3.range(yMin, yMax+(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
-    
+
+        // define x scale
+        xLine = [];
+        d3.range(xMin, xMax+(xRange/5), xRange/5).forEach(function(d){ xLine.push([xScale(Math.round(d * 10) / 10), 0, 0, Math.round(d * 10) / 10]); });
+
+
+        // define z scale
+        zLine = [];
+        d3.range(zMin, zMax+(zRange/5), zRange/5).forEach(function(d){ zLine.push([0, 0, zScale(Math.round(d * 10) / 10), Math.round(d * 10) / 10]); });
+
         // display the base and function surfaces
         color.domain([-yScale(yMax), -yScale(yMin)]);
         processData(surface(points), 'surface', 1000);
         processBaseData(baseSurface(base), 'base', 1000);
         processYAxisData(yAxis3d([yLine]));
+        processXAxisData(xAxis3d([xLine]));
+        processZAxisData(zAxis3d([zLine]));
 
         // update the 2D plots
         draw2dx();
