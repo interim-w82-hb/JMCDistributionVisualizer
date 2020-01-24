@@ -55,6 +55,6 @@ function draw2dz() {
         zVal += zScaleFactor;
     }
 
-    createPlot(funcData, plotCondSvg, 'x', 'cond', plotWidth, plotHeight, 'Conditional at Fixed y:', '#6666ff');
-    createPlot(funcData, plotMargSvg, 'z', 'marg', plotWidth, plotHeight, 'Marginal as y Varies', '#00cc66');
+    createPlot(funcData, plotCondSvg, 'x', 'cond', plotWidth, plotHeight, 'Conditional at Fixed Y:', '#6666ff');
+    createPlot(funcData, plotMargSvg, 'z', 'marg', plotWidth, plotHeight, 'Marginal as Y Varies', '#00cc66');
 }
