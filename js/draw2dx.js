@@ -37,13 +37,20 @@ function draw2dx() {
         .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    // compile text to function
+    // compile text to function at given x
     const comp = math.compile(funcText2d);
     function funcAtX (xChosen) {
         return function(zVal) {return comp.evaluate({x: xChosen, z: zVal});}
     }
 
-    const totalArea = math.integrate(funcAtX(xChosen), zMin, zMax, 0.001);
+    const totalAreaCond = math.integrate(funcAtX(xChosen), zMin, zMax, 0.001);
+
+    // compute integral of slice at given x
+    function integralAtX(xVal) {
+        return math.integrate(funcAtX(xVal), zMin, zMax, 0.001);
+    }
+
+    const totalAreaMarg = math.integrate(integralAtX, xMin, xMax);
 
     // gather points
     let funcData = [];
@@ -52,13 +59,13 @@ function draw2dx() {
     let xVal = xMin;
     let zVal = zMin;
     for (let i = 0; i < numPoints+1; i++) {
-        funcData[i] = {x: xVal, z: zVal, y: funcAtX(xChosen)(zVal) * (1/totalArea), yInt: math.integrate(funcAtX(xVal), zMin, zMax, 0.001)};
+        funcData[i] = {x: xVal, z: zVal, cond: funcAtX(xChosen)(zVal) * (1/totalAreaCond), marg: integralAtX(xVal) * (1/totalAreaMarg)};
         xVal += xScaleFactor;
         zVal += zScaleFactor;
     }
 
-    createPlot(funcData, plotCondSvg, 'z', 'y', plotWidth, plotHeight, 'Conditional at Fixed x:', '#ff5050');
-    createPlot(funcData, plotMargSvg, 'x', 'yInt', plotWidth, plotHeight, 'Marginal as x Varies', '#ffcc00');
+    createPlot(funcData, plotCondSvg, 'z', 'cond', plotWidth, plotHeight, 'Conditional at Fixed X:', '#ff5050');
+    createPlot(funcData, plotMargSvg, 'x', 'marg', plotWidth, plotHeight, 'Marginal as X Varies', '#ffcc00');
 }
 
 function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotName, hexColor) {
@@ -78,11 +85,11 @@ function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotNa
     plotSvg.append('g')
         .call(d3.axisLeft(y));
 
-    // create title?
+    // create title
     plotSvg.append('g')
         .append('text')
-        .attr('x', 0)
-        .attr('y', 0)
+        .attr('x', -10)
+        .attr('y', -10)
         .text(plotName);
 
     // plot the curve

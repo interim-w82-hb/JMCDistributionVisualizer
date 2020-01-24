@@ -11,9 +11,9 @@ function draw3d() {
     d3.select('#three-d-graphic').append('svg').attr('id', 'dim-plot').attr('width', width).attr('height', height);
     let funcText3d = d3.select('#function-input').property('value').replace('y', 'z');
     let xMin = +d3.select('#x-min-input').property('value') || 0;
-    let xMax = +d3.select('#x-max-input').property('value') || 20;
+    let xMax = +d3.select('#x-max-input').property('value') || 1;
     let zMin = +d3.select('#z-min-input').property('value') || 0;
-    let zMax = +d3.select('#z-max-input').property('value') || 20;
+    let zMax = +d3.select('#z-max-input').property('value') || 1;
     let xRange = xMax - xMin;
     let zRange = zMax - zMin;
     var origin = [width/2, height/2], j = 10, points = [], base = [], yLine = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
