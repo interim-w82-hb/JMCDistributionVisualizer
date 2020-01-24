@@ -57,11 +57,11 @@ function draw2dx() {
         zVal += zScaleFactor;
     }
 
-    createPlot(funcData, plotCondSvg, 'z', 'y', plotWidth, plotHeight, 'Conditional at Fixed x:');
-    createPlot(funcData, plotMargSvg, 'x', 'yInt', plotWidth, plotHeight, 'Marginal as x Varies');
+    createPlot(funcData, plotCondSvg, 'z', 'y', plotWidth, plotHeight, 'Conditional at Fixed x:', '#ff5050');
+    createPlot(funcData, plotMargSvg, 'x', 'yInt', plotWidth, plotHeight, 'Marginal as x Varies', '#ffcc00');
 }
 
-function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotName) {
+function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotName, hexColor) {
 
     // add the x Axis
     const x = d3.scaleLinear()
@@ -89,7 +89,7 @@ function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotNa
     plotSvg.append('path')
         .attr('class', 'mypath')
         .datum(data)
-        .attr('fill', '#253')
+        .attr('fill', hexColor)
         .attr('opacity', '.8')
         .attr('stroke', '#000')
         .attr('stroke-width', 1)
