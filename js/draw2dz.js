@@ -1,15 +1,9 @@
-function draw2dz() {
+function draw2dz(funcText, xMin, xMax, zMin, zMax, zChosen) {
 
     // set constants
     const numPoints = 1000;
-    const funcText2d = d3.select('#function-input').property('value').replace('y', 'z');
-    const xMin = +d3.select('#x-min-input').property('value') || 0;
-    const xMax = +d3.select('#x-max-input').property('value') || 1;
-    const zMin = +d3.select('#z-min-input').property('value') || 0;
-    const zMax = +d3.select('#z-max-input').property('value') || 1;
     const xRange = xMax - xMin;
     const zRange = zMax - zMin;
-    const zChosen = +d3.select('#chosen-z').property('value') || zMax;
 
     // clear and redraw plot
     // https://stackoverflow.com/questions/14422198/how-do-i-remove-all-children-elements-from-a-node-and-then-apply-them-again-with
@@ -29,7 +23,7 @@ function draw2dz() {
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     // compile text to function at given z
-    const comp = math.compile(funcText2d);
+    const comp = math.compile(funcText);
     function funcAtZ (zChosen) {
         return function(xVal) {return comp.evaluate({x: xVal, z: zChosen});}
     }

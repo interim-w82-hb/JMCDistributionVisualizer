@@ -7,18 +7,12 @@ const margin = {top: 30, right: 30, bottom: 30, left: 50};
 const plotWidth = graphicWidth - margin.left - margin.right;
 const plotHeight = graphicHeight - margin.top - margin.bottom;
 
-function draw2dx() {
+function draw2dx(funcText, xMin, xMax, zMin, zMax, xChosen) {
 
     // set constants
     const numPoints = 1000;
-    const funcText2d = d3.select('#function-input').property('value').replace('y', 'z');
-    const xMin = +d3.select('#x-min-input').property('value') || 0;
-    const xMax = +d3.select('#x-max-input').property('value') || 1;
-    const zMin = +d3.select('#z-min-input').property('value') || 0;
-    const zMax = +d3.select('#z-max-input').property('value') || 1;
     const xRange = xMax - xMin;
     const zRange = zMax - zMin;
-    const xChosen = +d3.select('#chosen-x').property('value') || xMax;
 
     // clear and redraw plot
     // https://stackoverflow.com/questions/14422198/how-do-i-remove-all-children-elements-from-a-node-and-then-apply-them-again-with
@@ -38,7 +32,7 @@ function draw2dx() {
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     // compile text to function at given x
-    const comp = math.compile(funcText2d);
+    const comp = math.compile(funcText);
     function funcAtX (xChosen) {
         return function(zVal) {return comp.evaluate({x: xChosen, z: zVal});}
     }

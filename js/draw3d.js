@@ -5,22 +5,17 @@ const width = 720;
 const height = 720;
 
 // plot function when submitted
-function draw3d() {
+function draw3d(funcText, xMin, xMax, zMin, zMax) {
 
     d3.select('#three-d-graphic').select('svg').remove();
     d3.select('#three-d-graphic').append('svg').attr('id', 'dim-plot').attr('width', width).attr('height', height);
-    let funcText3d = d3.select('#function-input').property('value').replace('y', 'z');
-    let xMin = +d3.select('#x-min-input').property('value') || 0;
-    let xMax = +d3.select('#x-max-input').property('value') || 1;
-    let zMin = +d3.select('#z-min-input').property('value') || 0;
-    let zMax = +d3.select('#z-max-input').property('value') || 1;
-    let xRange = xMax - xMin;
-    let zRange = zMax - zMin;
+    const xRange = xMax - xMin;
+    const zRange = zMax - zMin;
     var origin = [width/2, height/2], j = 10, points = [], base = [], yLine = [], alpha = 0, beta = 0, startAngle = Math.PI/4;
     var svg = d3.select('#dim-plot').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
     var mx, my, mouseX, mouseY;
     const maxRange = Math.max(xRange, zRange);
-    let imgScale = 250 / maxRange;
+    const imgScale = 250 / maxRange;
 
     const xScale = d3.scaleLinear()
         .domain([xMin, xMax])
@@ -273,7 +268,7 @@ function draw3d() {
 
         const yMin = d3.min(points.map(d => d.y));
         const yMax = d3.max(points.map(d => d.y));
-        const yRange = yMax - yMin;
+        const yRange = yMax - Math.min(yMin, 0);
 
         const yScale = d3.scaleLinear()
             .domain([0, yMax])
@@ -298,7 +293,7 @@ function draw3d() {
 
         // define y scale
         yLine = [];
-        d3.range(yMin, yMax+(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
+        d3.range(Math.min(yMin, 0), yMax+(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
 
         // define x scale
         xLine = [];
@@ -316,16 +311,12 @@ function draw3d() {
         processYAxisData(yAxis3d([yLine]));
         processXAxisData(xAxis3d([xLine]));
         processZAxisData(zAxis3d([zLine]));
-
-        // update the 2D plots
-        draw2dx();
-        draw2dz();
     }
     
     function change(){
 
         // submit the entered function
-        const comp = math.compile(funcText3d);
+        const comp = math.compile(funcText);
         function eqa (xVal, zVal) {
             return comp.evaluate({x: xVal, z: zVal});
         }

@@ -12,6 +12,7 @@
     <script src="js/draw3d.js"></script>
     <script src="js/draw2dx.js"></script>
     <script src="js/draw2dz.js"></script>
+    <script src="js/updateAll.js"></script>
     <title>Distribution Visualizer</title>
   </head>
   <body>
@@ -31,7 +32,7 @@
         <span>Max Y:</span>
         <input id="z-max-input" type="number" step="0.01">
         <br>
-        <button id="function-submit" onclick="draw3d()">Submit</button>
+        <button id="function-submit" onclick="updateAll()">Submit</button>
     </g>
     <br>
     <h2 id="graph-header-3d">3D Plot:</h2>
@@ -41,13 +42,13 @@
     <h2 id="graphs-header-2d">2D Plots:</h2>
     <span>Fixed X:</span>
     <input id="chosen-x" type="number" step="0.01">
-    <button id="x-submit" onclick="draw2dx()">Submit</button>
+    <button id="x-submit" onclick="updateAll()">Submit</button>
     <div id="two-d-graphics-x">
       <svg id="placeholder-2"></svg>
     </div>
     <span>Fixed Y:</span>
     <input id="chosen-z" type="number" step="0.01">
-    <button id="z-submit" onclick="draw2dz()">Submit</button>
+    <button id="z-submit" onclick="updateAll()">Submit</button>
     <div id="two-d-graphics-z">
       <svg id="placeholder-3"></svg>
     </div>
