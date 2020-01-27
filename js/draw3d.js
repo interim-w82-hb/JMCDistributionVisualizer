@@ -293,16 +293,16 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
 
         // define y scale
         yLine = [];
-        d3.range(Math.min(yMin, 0), yMax+(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
+        d3.range(Math.min(yMin, 0), yMax+0.5*(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
 
         // define x scale
         xLine = [];
-        d3.range(xMin, xMax+(xRange/5), xRange/5).forEach(function(d){ xLine.push([xScale(Math.round(d * 10) / 10), 0, 0, Math.round(d * 10) / 10]); });
+        d3.range(xMin, xMax+0.5*(xRange/5), xRange/5).forEach(function(d){ xLine.push([xScale(Math.round(d * 10) / 10), 0, 0, Math.round(d * 10) / 10]); });
 
 
         // define z scale
         zLine = [];
-        d3.range(zMin, zMax+(zRange/5), zRange/5).forEach(function(d){ zLine.push([0, 0, zScale(Math.round(d * 10) / 10), Math.round(d * 10) / 10]); });
+        d3.range(zMin, zMax+0.5*(zRange/5), zRange/5).forEach(function(d){ zLine.push([0, 0, zScale(Math.round(d * 10) / 10), Math.round(d * 10) / 10]); });
 
         // display the base and function surfaces
         color.domain([-yScale(yMax), -yScale(yMin)]);

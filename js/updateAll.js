@@ -2,12 +2,36 @@ function updateAll() {
 
     // receive necessary data from input fields
     let funcText = d3.select('#function-input').property('value') || '6x*y^2';
-    const xMin = +d3.select('#x-min-input').property('value') || 0;
-    const xMax = +d3.select('#x-max-input').property('value') || 1;
-    const zMin = +d3.select('#z-min-input').property('value') || 0;
-    const zMax = +d3.select('#z-max-input').property('value') || 1;
-    const xChosen = +d3.select('#chosen-x').property('value') || xMin + (xMax - xMin) / 2;
-    const zChosen = +d3.select('#chosen-z').property('value') || zMin + (zMax - zMin) / 2;
+    let xMin = +d3.select('#x-min-input').property('value') || 0;
+    if (xMin < 0) {
+        xMin = 0;
+    }
+    let xMax = +d3.select('#x-max-input').property('value') || 1;
+    if (xMax <= xMin) {
+        xMax = xMin + 1;
+    }
+    let zMin = +d3.select('#z-min-input').property('value') || 0;
+    if (zMin < 0) {
+        zMin = 0;
+    }
+    let zMax = +d3.select('#z-max-input').property('value') || 1;
+    if (zMax <= zMin) {
+        zMax = zMin + 1;
+    }
+    let xChosen = xMin + (xMax - xMin) / 2;
+    if (!(d3.select('#chosen-x').property('value') === '')) {
+        xChosen = +d3.select('#chosen-x').property('value');
+    }
+    if (!((xMin <= xChosen) && (xChosen <= xMax))) {
+        xChosen = xMin + (xMax - xMin) / 2;
+    }
+    let zChosen = zMin + (zMax - zMin) / 2;
+    if (!(d3.select('#chosen-z').property('value') === '')) {
+        zChosen = +d3.select('#chosen-z').property('value');
+    }
+    if (!((zMin <= zChosen) && (zChosen <= zMax))) {
+        zChosen = zMin + (zMax - zMin) / 2;
+    }
 
     // ensure that values in text input fields are set if they were defaults
     // https://www.w3schools.com/jsref/prop_text_value.asp
