@@ -1,5 +1,5 @@
 // initialize graphic dimensions
-const graphicHeight = 400;
+const graphicHeight = 460;
 const graphicWidth = 460;
 
 // set the dimensions and margins of the plot

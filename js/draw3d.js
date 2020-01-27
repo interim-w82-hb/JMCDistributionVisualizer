@@ -16,6 +16,8 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
     var mx, my, mouseX, mouseY;
     const maxRange = Math.max(xRange, zRange);
     const imgScale = 250 / maxRange;
+    const xShift = xRange/2;
+    const zShift = zRange/2;
 
     const xScale = d3.scaleLinear()
         .domain([xMin, xMax])
@@ -27,23 +29,23 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
 
     var baseSurface = d3._3d()
         .scale(imgScale)
-        .x(function(d){ return d.x; })
+        .x(function(d){ return d.x - xShift; })
         .y(function(d){ return d.y; })
-        .z(function(d){ return d.z; })
+        .z(function(d){ return d.z - zShift; })
         .origin(origin)
         .rotateY(startAngle)
         .rotateX(-startAngle)
-        .shape('SURFACE', j*2);
+        .shape('SURFACE', 21);
     
     var surface = d3._3d()
         .scale(imgScale)
-        .x(function(d){ return d.x; })
+        .x(function(d){ return d.x - xShift; })
         .y(function(d){ return d.y; })
-        .z(function(d){ return d.z; })
+        .z(function(d){ return d.z - zShift; })
         .origin(origin)
         .rotateY(startAngle)
         .rotateX(-startAngle)
-        .shape('SURFACE', j*2);
+        .shape('SURFACE', 21);
 
     var yAxis3d = d3._3d()
         .shape('LINE_STRIP')
@@ -145,8 +147,8 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
             })
-            .attr('x', function(d){ return d.projected.x - 10; })
-            .attr('y', function(d){ return d.projected.y; })
+            .attr('x', function(d){ return d.projected.x; })
+            .attr('y', function(d){ return d.projected.y - 15; })
             .text(function(d){ return d[3]; });
 
         yText.exit().remove();
@@ -156,7 +158,7 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
     
     function processXAxisData(data) {
 
-        // y-Scale
+        // x-scale
         var xAxis = svg.selectAll('path.xAxis').data(data);
 
         xAxis
@@ -170,7 +172,7 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
 
         xAxis.exit().remove();
 
-        // y-Scale text
+        // x-Scale text
         var xText = svg.selectAll('text.xText').data(data[0]);
 
         xText
@@ -183,8 +185,8 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
             })
-            .attr('x', function(d){ return d.projected.x - 10; })
-            .attr('y', function(d){ return d.projected.y; })
+            .attr('x', function(d){ return d.projected.x; })
+            .attr('y', function(d){ return d.projected.y + 15; })
             .text(function(d){ return d[3]; });
 
         xText.exit().remove();
@@ -193,7 +195,7 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
     } 
     function processZAxisData(data) {
 
-        // y-Scale
+        // z-Scale
         var zAxis = svg.selectAll('path.zAxis').data(data);
 
         zAxis
@@ -207,7 +209,7 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
 
         zAxis.exit().remove();
 
-        // y-Scale text
+        // z-Scale text
         var zText = svg.selectAll('text.zText').data(data[0]);
 
         zText
@@ -220,8 +222,8 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
             })
-            .attr('x', function(d){ return d.projected.x - 10; })
-            .attr('y', function(d){ return d.projected.y; })
+            .attr('x', function(d){ return d.projected.x; })
+            .attr('y', function(d){ return d.projected.y + 15; })
             .text(function(d){ return d[3]; });
 
         zText.exit().remove();
@@ -260,8 +262,10 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
 
         // define points of function without yScale
         points = [];
-        for(var z = zMin; z < zMax; z += zRange / 20){
-            for(var x = xMin; x < xMax; x += xRange / 20){d3.range(-1, 11, 1).forEach(function(d){ yLine.push([-j, -d, -j]); });
+        const overshootZ = zMax + 0.5*(zRange / 20);
+        const overshootX = xMax + 0.5*(xRange / 20)
+        for(var z = zMin; z < overshootZ; z += zRange / 20){
+            for(var x = xMin; x < overshootX; x += xRange / 20){d3.range(-1, 11, 1).forEach(function(d){ yLine.push([-j, -d, -j]); });
                 points.push({x: x, y: eq(x, z), z: z});
             }
         }
@@ -277,37 +281,37 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
     
         // define points of function with yScale
         points = [];
-        for(var z = zMin; z < zMax; z += zRange / 20){
-            for(var x = xMin; x < xMax; x += xRange / 20){
+        for(var z = zMin; z < overshootZ; z += zRange / 20){
+            for(var x = xMin; x < overshootX; x += xRange / 20){
                 points.push({x: xScale(x), y: -yScale(eq(x, z)), z: zScale(z)});  // negative prevents upsidown graph
             }
         }
     
         // define points of base
         base = [];
-        for(var z = zMin; z < zMax; z += zRange / 20){
-            for(var x = xMin; x < xMax; x += xRange / 20){
+        for(var z = zMin; z < overshootZ; z += zRange / 20){
+            for(var x = xMin; x < overshootX; x += xRange / 20){
                 base.push({x: xScale(x), y: yScale(0), z: zScale(z)});
             }
         }
 
         // define y scale
         yLine = [];
-        d3.range(Math.min(yMin, 0), yMax+0.5*(yRange/5), yRange/5).forEach(function(d){ yLine.push([0, -yScale(Math.round(d * 10) / 10), 0, Math.round(d * 10) / 10]); });
+        d3.range(Math.min(yMin, 0), yMax+0.5*(yRange/5), yRange/5).forEach(function(d){ yLine.push([-xShift, -yScale(Math.round(d * 10) / 10), -zShift, Math.round(d * 10) / 10]); });
 
         // define x scale
         xLine = [];
-        d3.range(xMin, xMax+0.5*(xRange/5), xRange/5).forEach(function(d){ xLine.push([xScale(Math.round(d * 10) / 10), 0, 0, Math.round(d * 10) / 10]); });
+        d3.range(xMin, xMax+0.5*(xRange/5), xRange/5).forEach(function(d){ xLine.push([xScale(Math.round(d * 10) / 10) - xShift, 0, -zShift, Math.round(d * 10) / 10]); });
 
 
         // define z scale
         zLine = [];
-        d3.range(zMin, zMax+0.5*(zRange/5), zRange/5).forEach(function(d){ zLine.push([0, 0, zScale(Math.round(d * 10) / 10), Math.round(d * 10) / 10]); });
+        d3.range(zMin, zMax+0.5*(zRange/5), zRange/5).forEach(function(d){ zLine.push([-xShift, 0, zScale(Math.round(d * 10) / 10) - zShift, Math.round(d * 10) / 10]); });
 
         // display the base and function surfaces
         color.domain([-yScale(yMax), -yScale(yMin)]);
-        processData(surface(points), 'surface', 1000);
-        processBaseData(baseSurface(base), 'base', 1000);
+        processData(surface(points), 'surface', 0);
+        processBaseData(baseSurface(base), 'base', 0);
         processYAxisData(yAxis3d([yLine]));
         processXAxisData(xAxis3d([xLine]));
         processZAxisData(zAxis3d([zLine]));
