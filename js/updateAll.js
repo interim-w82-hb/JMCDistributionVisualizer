@@ -6,8 +6,8 @@ function updateAll() {
     const xMax = +d3.select('#x-max-input').property('value') || 1;
     const zMin = +d3.select('#z-min-input').property('value') || 0;
     const zMax = +d3.select('#z-max-input').property('value') || 1;
-    const xChosen = +d3.select('#chosen-x').property('value') || (xMax - xMin) / 2;
-    const zChosen = +d3.select('#chosen-z').property('value') || (zMax - zMin) / 2;
+    const xChosen = +d3.select('#chosen-x').property('value') || xMin + (xMax - xMin) / 2;
+    const zChosen = +d3.select('#chosen-z').property('value') || zMin + (zMax - zMin) / 2;
 
     // ensure that values in text input fields are set if they were defaults
     // https://www.w3schools.com/jsref/prop_text_value.asp
