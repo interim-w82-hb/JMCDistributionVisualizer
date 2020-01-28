@@ -82,6 +82,7 @@ function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotNa
     // create title
     plotSvg.append('g')
         .append('text')
+        .style('font-weight', 'bold')
         .attr('x', -10)
         .attr('y', -10)
         .text(plotName);
@@ -100,6 +101,15 @@ function createPlot(data, plotSvg, xAxisUnits, yAxisUnits, width, height, plotNa
             .x(function(d) { return x(d[xAxisUnits]); })
             .y(function(d) { return y(d[yAxisUnits]); })
         );
+
+    // create horizontal axis label
+    plotSvg.append('g')
+        .append('text')
+        .style('font-weight', 'bold')
+        .style('text-anchor', 'middle')
+        .attr('x', width/2)
+        .attr('y', height + 30)
+        .text(xAxisUnits.replace('x', 'X').replace('z', 'Y'));
 
     // add endpoints so fill is even
     let oldPath = plotSvg.select('.mypath').attr('d');
