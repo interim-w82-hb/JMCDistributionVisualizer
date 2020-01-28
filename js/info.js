@@ -35,7 +35,7 @@ function displayInfo() {
     d3.select('#info-text')
         .html(info)
         .style('visibility', 'visible')
-        .style('left', '410px')
+        .style('left', '480px')
         .style('top', '50px')
 }
 
