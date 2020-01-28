@@ -147,8 +147,8 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
             })
-            .attr('x', function(d){ return d.projected.x; })
-            .attr('y', function(d){ return d.projected.y - 15; })
+            .attr('x', function(d){ return d.projected.x - 10; })
+            .attr('y', function(d){ return d.projected.y; })
             .text(function(d){ return d[3]; });
 
         yText.exit().remove();
@@ -179,7 +179,6 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .enter()
             .append('text')
             .attr('class', '_3d xText')
-            .attr('dx', '.3em')
             .attr('text-anchor', 'end')
             .merge(xText)
             .each(function(d){
@@ -187,7 +186,13 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             })
             .attr('x', function(d){ return d.projected.x; })
             .attr('y', function(d){ return d.projected.y + 15; })
-            .text(function(d){ return d[3]; });
+            .text(function(d){
+                if (d[3] != Math.round(xMin * 10) / 10) {
+                    return d[3]; 
+                } else {
+                    return '';
+                }
+            });
 
         xText.exit().remove();
 
@@ -216,7 +221,6 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .enter()
             .append('text')
             .attr('class', '_3d zText')
-            .attr('dx', '.3em')
             .attr('text-anchor', 'end')
             .merge(zText)
             .each(function(d){
@@ -224,7 +228,13 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             })
             .attr('x', function(d){ return d.projected.x; })
             .attr('y', function(d){ return d.projected.y + 15; })
-            .text(function(d){ return d[3]; });
+            .text(function(d){
+                if (d[3] != Math.round(zMin * 10) / 10) {
+                    return d[3]; 
+                } else {
+                    return '';
+                }
+            });
 
         zText.exit().remove();
 
