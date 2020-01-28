@@ -179,7 +179,7 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .enter()
             .append('text')
             .attr('class', '_3d xText')
-            .attr('text-anchor', 'end')
+            .attr('text-anchor', 'middle')
             .merge(xText)
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
@@ -221,7 +221,7 @@ function draw3d(funcText, xMin, xMax, zMin, zMax) {
             .enter()
             .append('text')
             .attr('class', '_3d zText')
-            .attr('text-anchor', 'end')
+            .attr('text-anchor', 'middle')
             .merge(zText)
             .each(function(d){
                 d.centroid = {x: d.rotated.x, y: d.rotated.y, z: d.rotated.z};
